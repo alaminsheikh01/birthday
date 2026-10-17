@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#241238;--bg2:#3a1b55;--ink:#fff4ea;--rose:#ff7aa8;--gold:#ffc979;--mint:#8de3c9;--card:#4a2569;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241238;--ink:#fff4ea}}
+:root[data-theme="dark"]{--bg:#241238;--ink:#fff4ea}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}button,.flip,.balloon,.candle{touch-action:manipulation}.candle::before{content:"";position:absolute;inset:-26px -14px 0}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% 0,var(--bg2),var(--bg) 70%) fixed;background-color:var(--bg);color:var(--ink);font:400 18px/1.6 Nunito,system-ui,sans-serif;overflow-x:hidden}
+h1,h2{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;margin:0;line-height:1.05}
+h2{font-size:clamp(28px,6vw,40px);margin-bottom:8px}
+section{max-width:720px;margin:0 auto;padding:72px 22px;text-align:center}
+section p.sub{margin:0 auto 28px;max-width:46ch;opacity:.85}
+button{font:700 17px Nunito,sans-serif;color:#2a1240;background:var(--gold);border:0;border-radius:999px;padding:12px 26px;cursor:pointer}
+button:focus-visible,.flip:focus-visible,.balloon:focus-visible,.candle:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+main{position:relative;z-index:1}
+/* gate */
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:var(--bg);text-align:center;padding:24px;transition:opacity .8s,visibility .8s}
+#gate.gone{opacity:0;visibility:hidden}
+#gate h2{font-size:clamp(30px,8vw,52px)}
+.gift{font-size:92px;background:none;padding:0;animation:wob 1.6s infinite}
+@keyframes wob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) scale(1.08)}}
+#mute{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:60;padding:8px 14px;font-size:15px;background:var(--card);color:var(--ink)}
+/* hero */
+.hero{min-height:92vh;min-height:92svh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.hero small{font-size:20px;opacity:.9;margin-bottom:10px}
+h1{font-size:clamp(48px,16vw,120px);color:var(--rose);display:flex;flex-wrap:wrap;justify-content:center}
+h1 .w{display:inline-block;white-space:nowrap;margin:0 .1em}h1 i{display:inline-block;font-style:inherit;opacity:0;transform:translateY(-60px) rotate(-8deg)}
+.go h1 i{animation:drop .9s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes drop{to{opacity:1;transform:none}}
+.hero .scroll{margin-top:34px;opacity:.7}
+/* cake */
+.cake{position:relative;width:240px;margin:50px auto 14px}
+.tier{border-radius:14px 14px 6px 6px;margin:0 auto}
+.t1{width:150px;height:62px;background:var(--rose);border-top:12px solid #fff4ea}
+.t2{width:240px;height:78px;background:#ff9bbf;border-top:12px solid #fff4ea}
+.plate{width:280px;height:12px;background:var(--gold);border-radius:50%;margin:0 auto}
+.candles{display:flex;justify-content:center;gap:14px;height:56px;align-items:flex-end}
+.candle{width:10px;height:38px;background:repeating-linear-gradient(160deg,var(--mint) 0 8px,#fff 8px 16px);border-radius:3px;position:relative;cursor:pointer;border:0;padding:0}
+.flame{position:absolute;left:50%;top:-24px;width:14px;height:22px;margin-left:-7px;background:radial-gradient(circle at 50% 70%,#fff 10%,var(--gold) 45%,#ff7a3c 100%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:fl .35s infinite alternate;transform-origin:50% 100%;transition:opacity .3s,transform .3s}
+@keyframes fl{to{transform:scale(1.1,.9) rotate(4deg)}}
+.candle.out .flame{opacity:0;transform:scale(.2);animation:none}
+.candle.out::after{content:"";position:absolute;left:3px;top:-22px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:0;animation:sm 1.6s ease-out}
+@keyframes sm{20%{opacity:.7}to{transform:translateY(-40px) scale(5);opacity:0}}
+#wishmsg{min-height:60px;margin-top:20px;font-family:Fraunces,serif;font-style:italic;font-size:24px;color:var(--gold)}
+/* flip cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.flip{perspective:700px;height:150px;background:none;border:0;padding:0;border-radius:18px;color:inherit;font:inherit;cursor:pointer}
+.in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.f,.b{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:16px;font-size:16px}
+.f{background:var(--card);font-size:44px;border:2px solid var(--rose)}
+.b{background:var(--gold);color:#2a1240;transform:rotateY(180deg);font-weight:700}
+/* balloons */
+.sky{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;min-height:150px}
+.balloon{width:64px;height:82px;border-radius:50% 50% 48% 48%;border:0;padding:0;cursor:pointer;position:relative;animation:fy 3s ease-in-out infinite;transition:transform .15s}
+.balloon::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:40px;background:#fff6;margin-left:-1px}
+.balloon.pop{animation:none;transform:scale(0);opacity:0;transition:transform .2s,opacity .2s}
+@keyframes fy{50%{transform:translateY(-16px)}}
+#bmsg{min-height:64px;margin-top:34px;font-size:20px}
+/* scratch */
+.sc{position:relative;width:min(100%,340px);height:170px;margin:0 auto;border-radius:18px;overflow:hidden;background:var(--gold);color:#2a1240;display:flex;align-items:center;justify-content:center;padding:18px;font-weight:700;font-size:19px}
+#sc{position:absolute;inset:0;touch-action:none;cursor:crosshair;transition:opacity .8s}
+/* letter */
+.letter{background:#fff4ea;color:#3a1b55;text-align:left;border-radius:6px 6px 22px 22px;padding:34px 28px;font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;font-size:21px;line-height:1.7;white-space:pre-wrap;min-height:300px;box-shadow:0 18px 50px #0006}
+.caret::after{content:"|";animation:bl 1s infinite}
+@keyframes bl{50%{opacity:0}}
+footer{padding:50px 20px 70px;text-align:center;opacity:.7;font-size:15px}
+@media (max-width:420px){section{padding:56px 16px}.letter{font-size:18px;padding:26px 20px}.grid{grid-template-columns:1fr 1fr;gap:12px}.flip{height:140px}.f,.b{font-size:14px;padding:10px}.f{font-size:40px}.gift{font-size:80px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas><canvas id="fx"></canvas>
+<div id="gate">
+  <button class="gift" id="open" aria-label="Open your surprise">🎁</button>
+  <h2>There’s a surprise for you</h2>
+  <p style="opacity:.8;margin:0">Tap the gift to open it. Turn your sound on.</p>
+</div>
+<button id="mute" aria-label="Toggle music">🔊 Music</button>
+<main id="app">
+  <section class="hero">
+    <small>Happy birthday,</small>
+    <h1 id="name" aria-label="name"></h1>
+    <div class="scroll">Scroll down. There’s more ↓</div>
+  </section>
+  <section>
+    <h2>Make a wish</h2>
+    <p class="sub">Tap each candle to blow it out, or let me do it for you.</p>
+    <div class="cake">
+      <div class="candles" id="candles"></div>
+      <div class="tier t1"></div><div class="tier t2"></div><div class="plate"></div>
+    </div>
+    <button id="blow">Blow them all out</button>
+    <div id="wishmsg" aria-live="polite"></div>
+  </section>
+  <section>
+    <h2>Six things about you</h2>
+    <p class="sub">Tap a card to flip it.</p>
+    <div class="grid" id="cards"></div>
+  </section>
+  <section>
+    <h2>Pop a balloon</h2>
+    <p class="sub">Each one holds a wish for your new year.</p>
+    <div class="sky" id="sky"></div>
+    <div id="bmsg" aria-live="polite"></div>
+  </section>
+  <section>
+    <h2>Your gift</h2>
+    <p class="sub">Scratch the gold with your finger or mouse.</p>
+    <div class="sc"><span id="prize"></span><canvas id="sc"></canvas></div>
+  </section>
+  <section>
+    <h2>One more thing</h2>
+    <p class="sub">A letter, just for you.</p>
+    <div class="letter caret" id="letter" aria-live="polite"></div>
+  </section>
+  <footer>Made with love, from far away · tap the stars for a wish ✨</footer>
+</main>
+<script>
+/* ---------- edit these ---------- */
+let NAME="Sumaiya Shova", FROM="Someone who adores you";
+try{const p=new URLSearchParams(location.search);if(p.get("name"))NAME=p.get("name").slice(0,24);if(p.get("from"))FROM=p.get("from").slice(0,40)}catch(e){}
+const FIRST=NAME.split(" ")[0];
+const REASONS=[["😊","Your laugh makes any room feel warmer."],["🌈","You make the hard days feel lighter."],["🦋","You’re braver than you think you are."],["🔍","You notice the little things about people."],["💛","Your kindness is never small."],["🏡","Even from far away, you feel like home."]];
+const WISHES=["May every morning start with something to smile about.","More adventures than you can fit in one year.","Dreams that finally say yes.","Peace on the loud days.","Laughter until your cheeks hurt.","Everything you wish for, plus a little extra."];
+const PRIZE="Your gift: a whole day together on a video call, planned by me. You just show up.";
+const LETTER=`Dear ${FIRST},\n\nI wish I could be there to celebrate with you today. Distance can’t change how much you matter to me, and I’m thinking of you every single day.\n\nThank you for the laughs, the patience, and for being exactly you. I hope this year is gentle, bright, and full of good surprises.\n\nHappy birthday.\n\nWith love,\n${FROM}`;
+/* -------------------------------- */
+const $=s=>document.querySelector(s);
+const nameEl=$("#name");
+let li=0;NAME.split(" ").forEach(w=>{const ws=document.createElement("span");ws.className="w";[...w].forEach(c=>{const s=document.createElement("i");s.textContent=c;s.style.animationDelay=(.6+li++*.09)+"s";ws.appendChild(s)});nameEl.appendChild(ws)});
+document.title="Happy Birthday, "+NAME;
+
+/* confetti */
+const fx=$("#fx"),cx=fx.getContext("2d");let parts=[],running=false;
+function size(){fx.width=innerWidth;fx.height=innerHeight;st.width=innerWidth;st.height=innerHeight;drawStars()}
+function burst(x,y,n=110){const cols=["#ff7aa8","#ffc979","#8de3c9","#fff4ea","#b69cff"];for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=4+Math.random()*9;parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-6,r:4+Math.random()*5,c:cols[i%5],rot:Math.random()*6,life:120+Math.random()*60})}if(!running){running=true;requestAnimationFrame(tick)}}
+function tick(){cx.clearRect(0,0,fx.width,fx.height);parts=parts.filter(p=>p.life-->0);parts.forEach(p=>{p.vy+=.25;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.rot+=.15;cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;cx.globalAlpha=Math.min(1,p.life/40);cx.fillRect(-p.r,-p.r/2,p.r*2,p.r);cx.restore()});if(parts.length)requestAnimationFrame(tick);else{running=false;cx.clearRect(0,0,fx.width,fx.height)}}
+
+/* stars (tap for a wish) */
+const st=$("#stars"),sx=st.getContext("2d");let dots=[];
+function drawStars(){dots=Array.from({length:70},()=>({x:Math.random()*st.width,y:Math.random()*st.height,r:Math.random()*1.6+.3}));sx.clearRect(0,0,st.width,st.height);dots.forEach(d=>{sx.fillStyle="rgba(255,244,234,"+(.3+Math.random()*.6)+")";sx.beginPath();sx.arc(d.x,d.y,d.r,0,7);sx.fill()})}
+let lw=innerWidth;addEventListener("resize",()=>{if(innerWidth!==lw){lw=innerWidth;size()}});size();
+addEventListener("pointerdown",e=>{if(e.target.closest("button,.flip,canvas#sc,.balloon,.candle"))return;burst(e.clientX,e.clientY,26)});
+
+/* music: synthesized happy birthday */
+let ac=null,muted=false,timer=null;
+const N={G4:392,A4:440,B4:494,C5:523,D5:587,E5:659,F5:698,G5:784};
+const SONG=[["G4",.5],["G4",.5],["A4",1],["G4",1],["C5",1],["B4",2],["G4",.5],["G4",.5],["A4",1],["G4",1],["D5",1],["C5",2],["G4",.5],["G4",.5],["G5",1],["E5",1],["C5",1],["B4",1],["A4",2],["F5",.5],["F5",.5],["E5",1],["C5",1],["D5",1],["C5",2]];
+function play(){if(!ac||muted)return;let t=ac.currentTime+.1;SONG.forEach(([n,d])=>{const o=ac.createOscillator(),g=ac.createGain();o.type="triangle";o.frequency.value=N[n];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+.03);g.gain.exponentialRampToValueAtTime(.001,t+d*.42);o.connect(g).connect(ac.destination);o.start(t);o.stop(t+d*.45);t+=d*.45});timer=setTimeout(play,(t-ac.currentTime+2)*1000)}
+$("#mute").onclick=()=>{muted=!muted;$("#mute").textContent=muted?"🔇 Music":"🔊 Music";clearTimeout(timer);if(!muted)play()};
+
+/* gate */
+$("#open").onclick=()=>{try{ac=new (window.AudioContext||window.webkitAudioContext)();play()}catch(e){}
+  $("#gate").classList.add("gone");document.body.classList.add("go");
+  setTimeout(()=>{burst(innerWidth/2,innerHeight/3,160);burst(innerWidth*.2,innerHeight/2,70);burst(innerWidth*.8,innerHeight/2,70)},500)};
+
+/* candles */
+const cd=$("#candles");let out=0;const CN=5;
+for(let i=0;i<CN;i++){const b=document.createElement("button");b.className="candle";b.setAttribute("aria-label","Candle "+(i+1));b.innerHTML='<i class="flame"></i>';b.onclick=()=>snuff(b);cd.appendChild(b)}
+function snuff(b){if(b.classList.contains("out"))return;b.classList.add("out");if(++out===CN){const r=b.getBoundingClientRect();burst(innerWidth/2,r.top,140);$("#wishmsg").textContent="Your wish is on its way, "+FIRST+". 💫"}}
+$("#blow").onclick=()=>{[...cd.children].forEach((c,i)=>setTimeout(()=>snuff(c),i*220))};
+
+/* flip cards */
+REASONS.forEach(([e,t])=>{const b=document.createElement("button");b.className="flip";b.setAttribute("aria-label","Flip card");b.innerHTML='<div class="in"><div class="f">'+e+'</div><div class="b"></div></div>';b.querySelector(".b").textContent=t;b.onclick=()=>b.classList.toggle("on");$("#cards").appendChild(b)});
+
+/* balloons */
+const BC=["#ff7aa8","#ffc979","#8de3c9","#b69cff","#ff9bbf","#7cc8ff"];let popped=0;
+WISHES.forEach((w,i)=>{const b=document.createElement("button");b.className="balloon";b.style.background=BC[i];b.style.animationDelay=(i*.4)+"s";b.setAttribute("aria-label","Pop balloon");b.onclick=()=>{if(b.classList.contains("pop"))return;b.classList.add("pop");const r=b.getBoundingClientRect();burst(r.left+32,r.top+40,40);$("#bmsg").textContent=w;if(++popped===WISHES.length)setTimeout(()=>{$("#bmsg").textContent="All wishes released. They’re all for you. 🎈";burst(innerWidth/2,innerHeight/2,120)},2600)};$("#sky").appendChild(b)});
+
+/* scratch card */
+$("#prize").textContent=PRIZE;
+const sc=$("#sc"),sg=sc.getContext("2d");let drawing=false,done=false;
+function paintCover(){const r=sc.getBoundingClientRect();sc.width=r.width;sc.height=r.height;const g=sg.createLinearGradient(0,0,r.width,r.height);g.addColorStop(0,"#d9a441");g.addColorStop(.5,"#f6dc8c");g.addColorStop(1,"#c98f2c");sg.fillStyle=g;sg.fillRect(0,0,r.width,r.height);sg.fillStyle="#6b4a10";sg.font="700 20px Nunito,sans-serif";sg.textAlign="center";sg.fillText("Scratch here ✨",r.width/2,r.height/2+7)}
+paintCover();
+function scratch(e){if(!drawing||done)return;const r=sc.getBoundingClientRect();sg.globalCompositeOperation="destination-out";sg.beginPath();sg.arc(e.clientX-r.left,e.clientY-r.top,20,0,7);sg.fill();check()}
+function check(){const d=sg.getImageData(0,0,sc.width,sc.height).data;let c=0;for(let i=3;i<d.length;i+=64)if(d[i]===0)c++;if(c/(d.length/64)>.5){done=true;sc.style.opacity=0;sc.style.pointerEvents="none";const r=sc.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,130)}}
+sc.addEventListener("pointerdown",e=>{drawing=true;sc.setPointerCapture(e.pointerId);scratch(e)});
+sc.addEventListener("pointermove",scratch);
+sc.addEventListener("pointerup",()=>drawing=false);
+
+/* letter typewriter */
+let typed=false;
+new IntersectionObserver((es,ob)=>{if(typed||!es[0].isIntersecting)return;typed=true;ob.disconnect();const el=$("#letter");let i=0;(function k(){el.textContent=LETTER.slice(0,++i);if(i<LETTER.length)setTimeout(k,34);else{el.classList.remove("caret");const r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top,120)}})()},{threshold:.5}).observe($("#letter"));
+</script>
+</body>
+</html>
